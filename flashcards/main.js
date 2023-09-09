@@ -1,5 +1,5 @@
-const NUMBER_OF_PAIRS = 6;
-const NUMBER_OF_ROWS = 2;
+const NUMBER_OF_PAIRS = 33;
+const NUMBER_OF_ROWS = 6;
 
 let time = 0;
 
@@ -48,8 +48,7 @@ function shuffle(array) {
 
 function new_rows() {
     if (JSON.stringify(remaining) === "[]") {
-        clearInterval(id);
-        console.log("done");
+        stop_timer();
         return;
     }
     nums1 = range(Math.min(remaining.length, NUMBER_OF_ROWS)).map(function(_) {
@@ -61,7 +60,7 @@ function new_rows() {
     nums2 = shuffle([...nums1]);
     const el = document.getElementById("element");
     ih = "";
-    const template = `<img id="$%" src="./images/$.jpeg" width="100px" onclick="javascript:clicked('$')" />`;
+    const template = `<img id="$%" src="./images/$.jpeg" width="250px" onclick="javascript:clicked('$')" />`;
     for (i = 0; i < nums1.length; i++) {
         ih += "<p>" + template.replaceAll("$", nums1[i] + "a").replace("%", uniqcount + "") + " &emsp; " + template.replaceAll("$", nums2[i] + "b").replace("%", uniqcount + "") + "</p>\n"
     }
@@ -70,10 +69,12 @@ function new_rows() {
 
 function clicked(s) {
     const elem = document.getElementById(s + uniqcount);
-    if (done.includes(s[0])) {
+    if (done.includes(s.slice(0, -1))) {
+        stop_timer();
+        document.getElementById("element").innerHTML = "";
         return;
     }
-    if (s[1] === "a") {
+    if (s[s.length - 1] === "a") {
         if (a_click === s) {
             a_click = "";
             elem.classList.remove("dark");
@@ -91,17 +92,18 @@ function clicked(s) {
         }
     }
     if (a_click !== "" && b_click !== "") {
-        if (a_click[0] === b_click[0]) {
+        if (a_click.slice(0, -1) === b_click.slice(0, -1)) {
             console.log("Correct!");
             document.getElementById(a_click + uniqcount).classList.remove("dark");
             document.getElementById(b_click + uniqcount).classList.remove("dark");
             document.getElementById(a_click + uniqcount).classList.add("done");
             document.getElementById(b_click + uniqcount).classList.add("done");
-            done.push(a_click[0]);
+            done.push(a_click.slice(0, -1));
         } else {
-            console.log("Wrong")
+            console.log("Wrong (+3s)")
             document.getElementById(a_click + uniqcount).classList.remove("dark");
             document.getElementById(b_click + uniqcount).classList.remove("dark");
+            time += 30;
         }
         a_click = "";
         b_click = "";
@@ -112,5 +114,16 @@ function clicked(s) {
         new_rows();
     }
 }
+
+function stop_timer() {
+    clearInterval(id);
+    console.log("done");
+}
+
+document.onkeyup = function (e) {
+    if ((e.ctrlKey || e.key === "Control") && e.key === "m") {
+      stop_timer();
+    }
+  };
 
 new_rows();
