@@ -1,2 +1,2 @@
-# flashcards7.github.io
+# https://flashcards7.github.io
 GitHub Pages website
