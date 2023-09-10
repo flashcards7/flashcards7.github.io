@@ -25,3 +25,12 @@ img:not(.done):not(.dark):hover {
 .dark {
     filter: brightness(0.5);
 }
+
+.fill-width {
+    height: 20px;
+    width: 100px;
+    background-color: #333333;
+    color: #dddddd;
+    border: none;
+    margin: 5px;
+}
