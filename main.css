@@ -25,7 +25,3 @@ img:not(.done):not(.dark):hover {
 .dark {
     filter: brightness(0.5);
 }
-
-.done {
-    filter: brightness(0.0);
-}

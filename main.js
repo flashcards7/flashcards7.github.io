@@ -60,7 +60,7 @@ function new_rows() {
     });
     nums2 = shuffle([...nums1]);
     ih = "";
-    const template = `<img id="$%" src="./images/$.jpeg" width="250px" onclick="javascript:clicked('$')" />`;
+    const template = `<img id="$%" src="./images/$.jpeg" height="100px" width="250px" onclick="javascript:clicked('$')" />`;
     for (i = 0; i < nums1.length; i++) {
         ih += "<p>" + template.replaceAll("$", nums1[i] + "a").replace("%", uniqcount + "") + 
               " &emsp; " + template.replaceAll("$", nums2[i] + "b").replace("%", uniqcount + "") + "</p>\n"
@@ -97,6 +97,8 @@ function clicked(s) {
             document.getElementById(b_click + uniqcount).classList.remove("dark");
             document.getElementById(a_click + uniqcount).classList.add("done");
             document.getElementById(b_click + uniqcount).classList.add("done");
+            document.getElementById(a_click + uniqcount).src = "../done.svg";
+            document.getElementById(b_click + uniqcount).src = "../done.svg";
             done.push(a_click.slice(0, -1));
         } else {
             console.log("Wrong (+3s)")
