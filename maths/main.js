@@ -204,3 +204,5 @@ function check() {
 document.getElementById("input").addEventListener("input", check);
 
 new_question();
+
+document.getElementById("input").focus()
