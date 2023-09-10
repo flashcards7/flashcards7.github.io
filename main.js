@@ -1,4 +1,3 @@
-const NUMBER_OF_PAIRS = 33;
 const NUMBER_OF_ROWS = 6;
 
 let time = 0;
@@ -13,7 +12,7 @@ function range(n) {
     return [...Array(n).keys()];
 }
 
-let remaining = range(NUMBER_OF_PAIRS);
+var remaining = range(NUMBER_OF_PAIRS);;
 
 let nums1 = [];
 let nums2 = [];
@@ -62,9 +61,11 @@ function new_rows() {
     ih = "";
     const template = `<img id="$%" src="./images/$.jpeg" width="250px" onclick="javascript:clicked('$')" />`;
     for (i = 0; i < nums1.length; i++) {
-        ih += "<p>" + template.replaceAll("$", nums1[i] + "a").replace("%", uniqcount + "") + " &emsp; " + template.replaceAll("$", nums2[i] + "b").replace("%", uniqcount + "") + "</p>\n"
+        ih += "<p>" + template.replaceAll("$", nums1[i] + "a").replace("%", uniqcount + "") + 
+              " &emsp; " + template.replaceAll("$", nums2[i] + "b").replace("%", uniqcount + "") + "</p>\n"
     }
     el.innerHTML = ih;
+    console.log(ih)
 }
 
 function clicked(s) {
