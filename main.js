@@ -46,18 +46,19 @@ function shuffle(array) {
 }
 
 function new_rows() {
-    if (JSON.stringify(remaining) === "[]") {
+    const el = document.getElementById("element");
+    if (remaining.length < NUMBER_OF_ROWS) {
         stop_timer();
+        el.innerHTML = "";
         return;
     }
-    nums1 = range(Math.min(remaining.length, NUMBER_OF_ROWS)).map(function(_) {
+    nums1 = range(NUMBER_OF_ROWS).map(function(_) {
         let i = rand_below(remaining.length);
         let ret = remaining[i];
         remaining.splice(i, 1);
-        return ret
+        return ret;
     });
     nums2 = shuffle([...nums1]);
-    const el = document.getElementById("element");
     ih = "";
     const template = `<img id="$%" src="./images/$.jpeg" width="250px" onclick="javascript:clicked('$')" />`;
     for (i = 0; i < nums1.length; i++) {
@@ -65,14 +66,11 @@ function new_rows() {
               " &emsp; " + template.replaceAll("$", nums2[i] + "b").replace("%", uniqcount + "") + "</p>\n"
     }
     el.innerHTML = ih;
-    console.log(ih)
 }
 
 function clicked(s) {
     const elem = document.getElementById(s + uniqcount);
     if (done.includes(s.slice(0, -1))) {
-        stop_timer();
-        document.getElementById("element").innerHTML = "";
         return;
     }
     if (s[s.length - 1] === "a") {
