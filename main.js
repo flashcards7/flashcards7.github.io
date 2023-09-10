@@ -60,10 +60,10 @@ function new_rows() {
     });
     nums2 = shuffle([...nums1]);
     ih = "";
-    const template = `<img id="$%" src="./images/$.jpeg" height="100px" width="250px" onclick="javascript:clicked('$')" />`;
+    const template = `<img id="$` + uniqcount + `" src="./images/$.jpeg" height="100px" width="` + WIDTH + `px" onclick="javascript:clicked('$')" />`;
     for (i = 0; i < nums1.length; i++) {
-        ih += "<p>" + template.replaceAll("$", nums1[i] + "a").replace("%", uniqcount + "") + 
-              " &emsp; " + template.replaceAll("$", nums2[i] + "b").replace("%", uniqcount + "") + "</p>\n"
+        ih += "<p>" + template.replaceAll("$", nums1[i] + "a") + 
+              " &emsp; " + template.replaceAll("$", nums2[i] + "b") + "</p>\n"
     }
     el.innerHTML = ih;
 }
@@ -125,6 +125,6 @@ document.onkeyup = function (e) {
     if ((e.ctrlKey || e.key === "Control") && e.key === "m") {
       stop_timer();
     }
-  };
+};
 
 new_rows();
