@@ -115,7 +115,7 @@ function generate_problem(difficulty) {
                 [
                     (
                         a = randint(100, 500),
-                        b = randint(100, 500),
+                        b = randint(11, 100),
                         evaluate(a, "+", b)
                     ),
                     (
