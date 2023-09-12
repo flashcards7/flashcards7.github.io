@@ -152,12 +152,12 @@ function generate_problem(difficulty) {
                 [
                     (
                         a = randint(100, 1000),
-                        b = randint(100, 1000),
+                        b = randint(100, 500),
                         evaluate(a, "+", b)
                     ),
                     (
                         a = randint(100, 500),
-                        b = randint(1, a),
+                        b = randint(10, a),
                         evaluate(a, "-", b)
                     ),
                     (
@@ -168,6 +168,42 @@ function generate_problem(difficulty) {
                     (
                         a = randint(10, 25),
                         b = randint(10, 25),
+                        evaluate(a * b, "/", b)
+                    )
+                ]
+            );
+
+        default:
+
+            /*************************
+             *        LEVEL 5        *
+             *                       *
+             * four-digit addition   *
+             * or subtraction, three *
+             * digit multiplication, *
+             * or two-digit division *
+             *************************/
+
+            return choice(
+                [
+                    (
+                        a = randint(1000, 10000),
+                        b = randint(1000, 5000),
+                        evaluate(a, "+", b)
+                    ),
+                    (
+                        a = randint(1000, 10000),
+                        b = randint(500, a),
+                        evaluate(a, "-", b)
+                    ),
+                    (
+                        a = randint(100, 1000),
+                        b = randint(50, 100),
+                        evaluate(a, "*", b)
+                    ),
+                    (
+                        a = randint(100, 1000),
+                        b = randint(50, 100),
                         evaluate(a * b, "/", b)
                     )
                 ]
