@@ -1,4 +1,14 @@
-aardvark
+let ans = "";
+
+function choice(l) {
+    return l[Math.floor(Math.random() * l.length)];
+}
+
+function choices(l, n) {
+    return [...Array(n).keys()].map(_ => choice(l));
+}
+
+const dict = `aardvark
 aardwolf
 aaron
 aback
@@ -32092,4 +32102,169 @@ zooming
 zooms
 zoos
 zulu
-zulus
+zulus`.split("\n")
+
+
+const q = Object.values(Object.groupBy(dict, s => s.length)).map(a => choices(a, 2).join(" ")).join(" ");
+
+let time = 0;
+
+let id = setInterval(async function(){
+    const timer = document.getElementById("timer");
+    time += 1;
+    timer.innerText = (time / 10).toFixed(1) + "s (" + ((ans.length / 5) / (time / 600)).toFixed(1) + " WPM)";
+}, 100)
+
+function stop_timer() {
+    clearInterval(id);
+    console.log("done");
+}
+
+let counter = 0;
+
+document.onkeyup = function (e) {
+    if (e.key.length === 1) {
+        if (ans.length < q.length) ans += e.key;
+    } else if (e.key === "Backspace") {
+        ans = ans.slice(0, -1);
+    }
+    update_colours();
+}
+
+function update_question() {
+    document.getElementById("question").innerHTML = [...q].map(
+        (c, i) => `<el id="q` + i + `">` + c + `</el>`
+    ).join("");
+}
+
+function update_colours() {
+    let i = 0;
+    for (; i < ans.length; i++) {
+        if (ans[i] === q[i]) {
+            document.getElementById("q" + i).style.color = "green";
+        } else {
+            document.getElementById("q" + i).style.color = "orange";
+        }
+    }
+    for (; i < q.length; i++) {
+        document.getElementById("q" + i).style.color = "";
+    }
+
+    if (ans === q) {
+        stop_timer();
+    }
+}
+
+/* OLD (DIDN'T QUITE WORK)
+
+function max_by(l, f) {
+    var m;
+    var x;
+    for (i = 0; i < l.length; i++) {
+        if (m === undefined) {
+            m = l[i];
+            x = f(m);
+        } else {
+            if ((k = f(j = l[i])) > x) {
+                m = j;
+                x = k;
+            }
+        }
+    }
+    return m;
+}
+
+function check(user_string, actual_string) {
+
+    counter += 1;
+
+    const zip = (a, b) => [...a].map((k, i) => [k, b[i]]);
+
+    const diff = user_string.length - actual_string.length;
+
+    if (counter >= 10000) {
+        console.warn("LIMIT REACHED")
+        return zip(actual_string, user_string).map(x => +(x[0] === x[1]));
+    }
+
+    const repeat = (n, x) => [...Array(n).keys()].map(_=>x)
+
+    if (user_string === "") {
+        return repeat(actual_string.length, 0);
+    }
+
+    if (actual_string === "") {
+        return [];
+    }
+
+    if (diff === 0) {
+
+        return zip(user_string, actual_string).map(x => +(x[0] === x[1]))
+
+    } else if (diff > 0) {  // user_string is longer
+
+        ret = [[]];
+
+        for (i = 0; i < user_string.length; i++) {
+            
+            if (user_string[i] === actual_string[i]) {
+                ret[0].push(1);
+            } else {
+                ret[0].push(0);
+                let temp = [...ret[0]];
+                temp.push(...check(user_string.slice(i + 1), actual_string.slice(i)));
+                ret.push(temp);
+            }
+
+        }
+
+        return max_by(ret, l => l.reduce((a, b) => a + b, 0));
+
+    } else {  // actual_string is longer
+
+        if (user_string === actual_string.slice(0, user_string.length)) {
+            let t = repeat(user_string.length, 1);
+            t.push(...repeat(actual_string.length - user_string.length, 0))
+            return t;
+        }
+
+        ret = [[]];
+
+        for (i = 0; i < actual_string.length; i++) {
+            
+            if (user_string[i] === actual_string[i]) {
+                ret[0].push(1);
+            } else {
+
+                ret[0].push(0);
+                let temp = [...ret[0]];
+                temp.push(...check(user_string.slice(i), actual_string.slice(i + 1)));
+                ret.push(temp);
+            }
+
+        }
+
+        return max_by(ret, l => [l.length, l.reduce((a, b) => a + b, 0)]);
+
+    }
+
+}
+
+function colour() {
+    let [al, ql] = [ans.length, q.length]
+    if (ql >= al) {
+        counter = 0;
+        let arr = check(ans, q)
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] === 1) {
+                document.getElementById("q" + i).style.color = "green";
+            } else {
+                document.getElementById("q" + i).style.color = "orange";
+            }
+        }
+    }
+}
+
+*/
+
+update_question();
