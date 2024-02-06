@@ -1,5 +1,15 @@
 let ans = "";
 
+const timer = document.getElementById("timer");
+const scorebar = document.getElementById("scorebar");
+
+var groupBy = function(xs, key) {
+    return xs.reduce(function(rv, x) {
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
+    }, {});
+  };
+
 function choice(l) {
     return l[Math.floor(Math.random() * l.length)];
 }
@@ -32105,14 +32115,27 @@ zulu
 zulus`.split("\n")
 
 
-const q = Object.values(Object.groupBy(dict, s => s.length)).map(a => choices(a, 2).join(" ")).join(" ");
+const q = Object.values(groupBy(dict, "length")).map(a => choices(a, 2).join(" ")).join(" ");
 
 let time = 0;
 
 let id = -1;
 
+function accuracy() {
+    let corr = 0;
+    for (let j = 0; j < ans.length; j++) {
+        if (ans[j] === q[j]) {
+           corr++; 
+        }
+    }
+    return corr / ans.length;
+}
+
 function stop_timer() {
-    timer.innerText = (time / 10).toFixed(1) + "s (" + ((ans.length / 5) / (time / 600)).toFixed(1) + " WPM)";
+    let wpm = (ans.length / 5) / (time / 600);
+    let acc = accuracy();
+    timer.innerText = (time / 10).toFixed(1) + "s";
+    scorebar.innerText = (wpm * acc).toFixed(1) + " WPM | " + wpm.toFixed(1) + " RAW | " + (acc * 100).toFixed(0) + "% ACC";
     clearInterval(id);
     console.log("done");
 }
@@ -32126,7 +32149,10 @@ document.onkeyup = function (e) {
             id = setInterval(async function(){
                 const timer = document.getElementById("timer");
                 time += 1;
-                timer.innerText = (time / 10).toFixed(1) + "s (" + ((ans.length / 5) / (time / 600)).toFixed(1) + " WPM)";
+                let wpm = (ans.length / 5) / (time / 600);
+                let acc = accuracy();
+                timer.innerText = (time / 10).toFixed(1) + "s";
+                scorebar.innerText = (wpm * acc).toFixed(1) + " WPM | " + wpm.toFixed(1) + " RAW | " + (acc * 100).toFixed(0) + "% ACC";
             }, 100)
         }
     } else if (e.key === "Backspace") {
@@ -32154,7 +32180,7 @@ function update_colours() {
         document.getElementById("q" + i).style.color = "";
     }
 
-    if (ans === q) {
+    if (ans.length >= q.length) {
         stop_timer();
     }
 }
