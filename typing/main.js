@@ -32128,6 +32128,9 @@ function accuracy() {
            corr++; 
         }
     }
+    if (ans.length == 0) {
+        return 1.0;
+    }
     return corr / ans.length;
 }
 
@@ -32137,12 +32140,16 @@ function stop_timer() {
     timer.innerText = (time / 10).toFixed(1) + "s";
     scorebar.innerText = (wpm * acc).toFixed(1) + " WPM | " + wpm.toFixed(1) + " RAW | " + (acc * 100).toFixed(0) + "% ACC";
     clearInterval(id);
+    id = -2;
     console.log("done");
 }
 
 let counter = 0;
 
 document.onkeyup = function (e) {
+    if (id === -2) {
+        return;
+    }
     if (e.key.length === 1) {
         if (ans.length < q.length) ans += e.key;
         if (id === -1) {
@@ -32159,6 +32166,11 @@ document.onkeyup = function (e) {
         ans = ans.slice(0, -1);
     }
     update_colours();
+    if (ans.length > 5 && accuracy() < 0.8) {
+        stop_timer();
+        timer.innerText = "Stopped."
+        scorebar.innerText = "Accuracy too low";
+    }
 }
 
 function update_question() {
